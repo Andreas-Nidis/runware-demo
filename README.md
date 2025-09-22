@@ -77,9 +77,9 @@ This short walkthrough covers:
 - Deploy on Vercel/Netlify for easy sharing
 
 ## 📚 Resources
-[Runware Docs](https://runware.ai/docs/en/getting-started/introduction "Runware Documentation")
-[Runware Playground](https://my.runware.ai/playground?_gl=1*1qv5hwq*_gcl_aw*R0NMLjE3NTgyMDE4MTcuQ2owS0NRand1S25HQmhENUFSSXNBRDE5UnNZejZqSlpWZEFQekNTZ0pIMlpVODc2N2FEazlfZUZmdno5a0ROblpSa1l1Q3pDSHR6RlM4TWFBcTgtRUFMd193Y0I.*_gcl_au*MjA4ODk4NTA3NS4xNzU2NzM5MDA0Ljk2MDgwMDkyNi4xNzU4NTY1MzQ4LjE3NTg1NjUzNTQ.*_ga*MTE1ODI2ODU4LjE3NTY3MzkwMDQ.*_ga_WVXGF7DB6P*czE3NTg1NzEwOTgkbzEzJGcwJHQxNzU4NTcxMTAzJGo1NSRsMCRoMA..&modelAIR=runware%3A101%401&modelArchitecture=flux1d "Runware Playground")
-[Runware Blog](https://runware.ai/blog "Runware Blog")
+- [Runware Docs](https://runware.ai/docs/en/getting-started/introduction "Runware Documentation")
+- [Runware Playground](https://my.runware.ai/playground?_gl=1*1qv5hwq*_gcl_aw*R0NMLjE3NTgyMDE4MTcuQ2owS0NRand1S25HQmhENUFSSXNBRDE5UnNZejZqSlpWZEFQekNTZ0pIMlpVODc2N2FEazlfZUZmdno5a0ROblpSa1l1Q3pDSHR6RlM4TWFBcTgtRUFMd193Y0I.*_gcl_au*MjA4ODk4NTA3NS4xNzU2NzM5MDA0Ljk2MDgwMDkyNi4xNzU4NTY1MzQ4LjE3NTg1NjUzNTQ.*_ga*MTE1ODI2ODU4LjE3NTY3MzkwMDQ.*_ga_WVXGF7DB6P*czE3NTg1NzEwOTgkbzEzJGcwJHQxNzU4NTcxMTAzJGo1NSRsMCRoMA..&modelAIR=runware%3A101%401&modelArchitecture=flux1d "Runware Playground")
+- [Runware Blog](https://runware.ai/blog "Runware Blog")
 
 
 ✨ Built for the Runware Graduate Role Practical Assessment.
