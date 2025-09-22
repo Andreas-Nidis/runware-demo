@@ -188,7 +188,29 @@ const RunwareDemo = () => {
                 `Generate ${numberOfResults} ${activeTab === 'image' ? 'Image(s)' : 'Video(s)'}`
               )}
             </GenerateButton>
-            
+
+            {results.length > 0 && (
+              <ResultsContainer>
+                <h3 style={{color: '#ffffff'}}>
+                  Generated Results ({results.length} of {numberOfResults}):
+                </h3>
+                <ResultGrid count={results.length}>
+                  {activeTab === 'image' ? (
+                    results.map((result, index) => (
+                      <ResultImage 
+                        key={index} 
+                        src={result} 
+                        alt={`Generated image ${index + 1}`} 
+                      />
+                    ))
+                  ) : (
+                    results.map((result, index) => (
+                      <ResultVideo key={index} src={result} controls />
+                    ))
+                  )}
+                </ResultGrid>
+              </ResultsContainer>
+            )}
           </GeneratorSection>
         </section>
         
@@ -466,5 +488,49 @@ const LoadingSpinner = styled.div`
   
   @keyframes spin {
     to { transform: rotate(360deg); }
+  }
+`;
+
+const ResultsContainer = styled.div`
+  margin-top: 30px;
+  display: grid;
+  gap: 20px;
+`;
+
+const ResultGrid = styled.div`
+  display: grid;
+  grid-template-columns: ${props => props.count === 1 ? '1fr' : props.count === 2 ? '1fr 1fr' : '1fr 1fr 1fr'};
+  gap: 15px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: ${props => props.count <= 2 ? '1fr' : '1fr 1fr'};
+  }
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const ResultImage = styled.img`
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+`;
+
+const ResultVideo = styled.video`
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.02);
   }
 `;
