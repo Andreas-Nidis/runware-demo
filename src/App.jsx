@@ -9,9 +9,9 @@ const RunwareDemo = () => {
   // const [isInitialized, setIsInitialized] = useState(false);
   // const [isError, setIsError] = useState(false);
   // const [status, setStatus] = useState('Initializing...');
-  // const [isGenerating, setIsGenerating] = useState(false);
-  // const [prompt, setPrompt] = useState('');
-  // const [numberOfResults, setNumberOfResults] = useState(1);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [prompt, setPrompt] = useState('');
+  const [numberOfResults, setNumberOfResults] = useState(1);
   // const [results, setResults] = useState([]);
 
 
@@ -107,6 +107,8 @@ const RunwareDemo = () => {
     document.getElementById('generators')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const numberOptions = [1, 2, 3, 4, 5];
+
   return (
     <>
       <GlobalStyle />
@@ -139,19 +141,36 @@ const RunwareDemo = () => {
             <h2 style={{color: '#ffffff', marginBottom: '10px'}}>
               {activeTab === 'image' ? 'Image' : 'Video'} Generation
             </h2>
-            
-            
 
             <p style={{color: '#e0e0e0', marginBottom: '20px'}}>
               Enter your prompt to generate {activeTab === 'image' ? 'images' : 'videos'}
             </p>
-            
+
             <PromptInput
               placeholder={`Describe the ${activeTab} you want to generate...`}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
             />
 
+            <ControlsContainer>
+              <NumberSelectorContainer>
+                <NumberSelectorLabel>
+                  Number of {activeTab === 'image' ? 'Images' : 'Videos'}:
+                </NumberSelectorLabel>
+                <NumberSelector>
+                  {numberOptions.map((number) => (
+                    <NumberButton
+                      key={number}
+                      active={numberOfResults === number}
+                      onClick={() => setNumberOfResults(number)}
+                      disabled={isGenerating}
+                    >
+                      {number}
+                    </NumberButton>
+                  ))}
+                </NumberSelector>
+              </NumberSelectorContainer>
+            </ControlsContainer>
             
           </GeneratorSection>
         </section>
@@ -315,5 +334,62 @@ const PromptInput = styled.textarea`
     outline: none;
     border-color: #9d4edd;
     box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.2);
+  }
+`;
+
+const ControlsContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+  
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const NumberSelectorContainer = styled.div`
+  width: 15rem;
+  gap: 10px;
+`;
+
+const NumberSelectorLabel = styled.label`
+  color: #e0e0e0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+
+const NumberSelector = styled.div`
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+`;
+
+const NumberButton = styled.button`
+  flex: 1;
+  padding: 12px 0;
+  border: none;
+  background: ${props => props.active ? 'linear-gradient(90deg, #7b2cbf, #9d4edd)' : 'transparent'};
+  color: ${props => props.active ? 'white' : '#b0b0b0'};
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  
+  &:hover:not(:disabled) {
+    background: ${props => props.active ? 'linear-gradient(90deg, #7b2cbf, #9d4edd)' : 'rgba(255, 255, 255, 0.05)'};
+    color: ${props => props.active ? 'white' : '#e0e0e0'};
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  &:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
   }
 `;
