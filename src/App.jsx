@@ -134,6 +134,26 @@ const RunwareDemo = () => {
               Video
             </ToggleButton>
           </ToggleContainer>
+
+          <GeneratorSection>
+            <h2 style={{color: '#ffffff', marginBottom: '10px'}}>
+              {activeTab === 'image' ? 'Image' : 'Video'} Generation
+            </h2>
+            
+            
+
+            <p style={{color: '#e0e0e0', marginBottom: '20px'}}>
+              Enter your prompt to generate {activeTab === 'image' ? 'images' : 'videos'}
+            </p>
+            
+            <PromptInput
+              placeholder={`Describe the ${activeTab} you want to generate...`}
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+            />
+
+            
+          </GeneratorSection>
         </section>
         
 
@@ -261,5 +281,39 @@ const ToggleButton = styled.button`
   &:hover {
     color: ${props => props.active ? 'white' : '#e0e0e0'};
     background: ${props => props.active ? 'linear-gradient(90deg, #7b2cbf, #9d4edd)' : 'rgba(255, 255, 255, 0.05)'};
+  }
+`;
+
+const GeneratorSection = styled.section`
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 40px;
+  animation: ${fadeIn} 1s ease-out;
+  backdrop-filter: blur(10px);
+`;
+
+const PromptInput = styled.textarea`
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 15px;
+  color: white;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  resize: vertical;
+  min-height: 100px;
+  transition: all 0.3s ease;
+  
+  &::placeholder {
+    color: #a0a0a0;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: #9d4edd;
+    box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.2);
   }
 `;
