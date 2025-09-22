@@ -5,8 +5,8 @@ import { Runware } from '@runware/sdk-js';
 let runware;
 
 const RunwareDemo = () => {
-  // const [activeTab, setActiveTab] = useState<'image' | 'video'>('image');
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [activeTab, setActiveTab] = useState('image');
+  // const [isInitialized, setIsInitialized] = useState(false);
   // const [isError, setIsError] = useState(false);
   // const [status, setStatus] = useState('Initializing...');
   // const [isGenerating, setIsGenerating] = useState(false);
@@ -118,6 +118,23 @@ const RunwareDemo = () => {
             ↓
           </ScrollIndicator>
         </Header>
+
+        <section id="generators">
+          <ToggleContainer>
+            <ToggleButton 
+              active={activeTab === 'image'} 
+              onClick={() => setActiveTab('image')}
+            >
+              Image
+            </ToggleButton>
+            <ToggleButton 
+              active={activeTab === 'video'} 
+              onClick={() => setActiveTab('video')}
+            >
+              Video
+            </ToggleButton>
+          </ToggleContainer>
+        </section>
         
 
 
@@ -215,4 +232,34 @@ const ScrollIndicator = styled.div`
   animation: ${pulse} 2s infinite;
   cursor: pointer;
   color: #9d4edd;
+`;
+
+const ToggleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  padding: 5px;
+  width: 300px;
+  margin: 0 auto 40px;
+  backdrop-filter: blur(10px);
+`;
+
+const ToggleButton = styled.button`
+  background: ${props => props.active ? 'linear-gradient(90deg, #7b2cbf, #9d4edd)' : 'transparent'};
+  color: ${props => props.active ? 'white' : '#b0b0b0'};
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  flex: 1;
+  
+  &:hover {
+    color: ${props => props.active ? 'white' : '#e0e0e0'};
+    background: ${props => props.active ? 'linear-gradient(90deg, #7b2cbf, #9d4edd)' : 'rgba(255, 255, 255, 0.05)'};
+  }
 `;
