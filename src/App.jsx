@@ -103,6 +103,10 @@ const RunwareDemo = () => {
   //   }
   // };
 
+  const scrollToGenerators = () => {
+    document.getElementById('generators')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <>
       <GlobalStyle />
@@ -110,8 +114,12 @@ const RunwareDemo = () => {
         <Header>
           <Title>Runware AI Generator</Title>
           <Subtitle>Create stunning images and videos with AI-powered generation</Subtitle>
+          <ScrollIndicator onClick={scrollToGenerators}>
+            ↓
+          </ScrollIndicator>
         </Header>
         
+
 
       </Container>
     </>
@@ -154,10 +162,25 @@ const fadeIn = keyframes`
   }
 `;
 
+const pulse = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
+
+
 // Component Styles
 const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Header = styled.header`
@@ -185,4 +208,11 @@ const Subtitle = styled.p`
   margin-bottom: 40px;
   line-height: 1.6;
   color: #e0e0e0;
+`;
+
+const ScrollIndicator = styled.div`
+  font-size: 2.3rem;
+  animation: ${pulse} 2s infinite;
+  cursor: pointer;
+  color: #9d4edd;
 `;
