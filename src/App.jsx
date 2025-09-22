@@ -6,102 +6,103 @@ let runware;
 
 const RunwareDemo = () => {
   const [activeTab, setActiveTab] = useState('image');
-  // const [isInitialized, setIsInitialized] = useState(false);
-  // const [isError, setIsError] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [isError, setIsError] = useState(false);
   // const [status, setStatus] = useState('Initializing...');
   const [isGenerating, setIsGenerating] = useState(false);
   const [prompt, setPrompt] = useState('');
   const [numberOfResults, setNumberOfResults] = useState(1);
-  // const [results, setResults] = useState([]);
+  const [results, setResults] = useState([]);
+  const [status, setStatus] = useState(null);
+  
+  // Initialize Runware SDK
+  useEffect(() => {
+    const initializeRunware = async () => {
+      try {
+        setStatus('Initializing Runware SDK...');
+        
+        // Get API key from environment variables
+        const apiKey = import.meta.env.VITE_RUNWARE_API_KEY;
+        
+        if (!apiKey) {
+          throw new Error('Runware API key not found in environment variables');
+        }
+        
+        // Initialize Runware
+        runware = await Runware.initialize({
+          apiKey: apiKey,
+          shouldReconnect: true,
+          globalMaxRetries: 3,
+          timeoutDuration: 60000, // 5 minutes timeout
+        });
+        
+        setIsInitialized(true);
+        setStatus('Runware SDK initialized successfully!');
+        setTimeout(() => setStatus(null), 3000);
+      } catch (error) {
+        console.error('Failed to initialize Runware:', error);
+        setStatus(`Initialization failed: ${error instanceof Error ? error.message : String(error)}`);
+        setIsError(true);
+      }
+    };
 
-
-  // useEffect(() => {
-  //   const initializeRunware = async () => {
-  //     try {
-  //       setStatus('Initializing Runware SDK...');
-        
-  //       // Get API key from environment variables
-  //       const apiKey = import.meta.env.VITE_RUNWARE_API_KEY;
-        
-  //       if (!apiKey) {
-  //         throw new Error('Runware API key not found in environment variables');
-  //       }
-        
-  //       // Initialize Runware
-  //       runware = await Runware.initialize({
-  //         apiKey: apiKey,
-  //         shouldReconnect: true,
-  //         globalMaxRetries: 3,
-  //         timeoutDuration: 60000, // 5 minutes timeout
-  //       });
-        
-  //       setIsInitialized(true);
-  //       setStatus('Runware SDK initialized successfully!');
-  //       setTimeout(() => setStatus(null), 3000);
-  //     } catch (error) {
-  //       console.error('Failed to initialize Runware:', error);
-  //       setStatus(`Initialization failed: ${error instanceof Error ? error.message : String(error)}`);
-  //       setIsError(true);
-  //     }
-  //   };
-
-  //   initializeRunware();
-  // }, []);
+    initializeRunware();
+  }, []);
 
   // getErrorMessage(error) will be a function created to handle different error types
-  // const handleGenerate = async () => {
-  //   if (!prompt.trim() || !isInitialized) return;
+  const handleGenerate = async () => {
+    if (!prompt.trim() || !isInitialized) return;
 
-  //   setIsGenerating(true);
-  //   setStatus(`Generating ${numberOfResults} ${activeTab}(s)...`);
-  //   setIsError(false);
-  //   setResults([]); // Clear previous results
+    setIsGenerating(true);
+    setStatus(`Generating ${numberOfResults} ${activeTab}(s)...`);
+    setIsError(false);
+    setResults([]); // Clear previous results
 
-  //   try {
-  //     if (activeTab === 'image') {
+    try {
+      if (activeTab === 'image') {
 
-  //       // Generate images using Runware API
-  //       // Faster model is used for demo purposes
-  //       // Smaller size used for faster generation during peak hours
-  //       const images = await runware.requestImages({
-  //         taskType: "imageInference",
-  //         positivePrompt: prompt,
-  //         model: "runware:100@1", 
-  //         width: 256, 
-  //         height: 256,
-  //         numberResults: numberOfResults,
-  //         onPartialImages: (partialImages, error) => { 
-  //           if (error) {
-  //             console.log("Images response:", images);
-  //             console.error('Generation error:', error);
-  //             // setStatus(`Error: ${getErrorMessage(error)}`); 
-  //             setIsError(true);
-  //           } else if (partialImages && partialImages.length > 0) {
-  //             setStatus(`Generated ${partialImages.length} of ${numberOfResults} image(s)...`);
-  //             // Update results with the new images
-  //             const newResults = partialImages.map(img => img.imageURL);
-  //             setResults(prev => [...prev, ...newResults]);
-  //           }
-  //         },
-  //       });
+        // Generate images using Runware API
+        // Faster model is used for demo purposes
+        // Smaller size used for faster generation during peak hours
+        const images = await runware.requestImages({
+          taskType: "imageInference",
+          positivePrompt: prompt,
+          model: "runware:100@1", 
+          width: 256, 
+          height: 256,
+          numberResults: numberOfResults,
+          onPartialImages: (partialImages, error) => { 
+            if (error) {
+              console.log("Images response:", images);
+              console.error('Generation error:', error);
+              // setStatus(`Error: ${getErrorMessage(error)}`); 
+              setIsError(true);
+            } else if (partialImages && partialImages.length > 0) {
+              setStatus(`Generated ${partialImages.length} of ${numberOfResults} image(s)...`);
+              // Update results with the new images
+              const newResults = partialImages.map(img => img.imageURL);
+              setResults(prev => [...prev, ...newResults]);
+            }
+          },
+        });
 
-  //       // Set final results
-  //       if (images && images.length > 0) {
-  //         const imageUrls = images.map((img) => img.imageURL);
-  //         setResults(imageUrls);
-  //         setStatus(`Successfully generated ${images.length} image(s)!`);
-  //       }
-  //     } else {
-  //       // Generate video using Runware API
-  //     }
-  //   } catch (error) {
-  //     console.error('Generation error:', error);
-  //     // setStatus(`Error: ${getErrorMessage(error)}`); --- getErrorMessage will be a function to handle different error types
-  //     setIsError(true);
-  //   } finally {
-  //     setIsGenerating(false);
-  //   }
-  // };
+        // Set final results
+        if (images && images.length > 0) {
+          const imageUrls = images.map((img) => img.imageURL);
+          setResults(imageUrls);
+          setStatus(`Successfully generated ${images.length} image(s)!`);
+        }
+      } else {
+        // Generate video using Runware API
+      }
+    } catch (error) {
+      console.error('Generation error:', error);
+      // setStatus(`Error: ${getErrorMessage(error)}`); --- getErrorMessage will be a function to handle different error types
+      setIsError(true);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   const scrollToGenerators = () => {
     document.getElementById('generators')?.scrollIntoView({ behavior: 'smooth' });
@@ -171,6 +172,22 @@ const RunwareDemo = () => {
                 </NumberSelector>
               </NumberSelectorContainer>
             </ControlsContainer>
+
+            {status && <StatusMessage error={isError}>{status}</StatusMessage>}
+
+            <GenerateButton 
+              onClick={handleGenerate} 
+              disabled={isGenerating || !prompt.trim() || !isInitialized}
+            >
+              {isGenerating ? (
+                <>
+                  <LoadingSpinner />
+                  Generating {numberOfResults} {activeTab === 'image' ? 'Image(s)' : 'Video(s)'}...
+                </>
+              ) : (
+                `Generate ${numberOfResults} ${activeTab === 'image' ? 'Image(s)' : 'Video(s)'}`
+              )}
+            </GenerateButton>
             
           </GeneratorSection>
         </section>
@@ -391,5 +408,63 @@ const NumberButton = styled.button`
   
   &:not(:last-child) {
     border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
+`;
+
+const StatusMessage = styled.div`
+  padding: 12px;
+  border-radius: 8px;
+  margin: 15px 0;
+  background: ${props => props.error ? 'rgba(255, 0, 0, 0.1)' : 'rgba(157, 78, 221, 0.1)'};
+  border: 1px solid ${props => props.error ? 'rgba(255, 100, 100, 0.3)' : 'rgba(157, 78, 221, 0.3)'};
+  color: ${props => props.error ? '#ff6b6b' : '#9d4edd'};
+  text-align: center;
+  font-weight: 500;
+`;
+
+const GenerateButton = styled.button`
+  background: linear-gradient(90deg, #7b2cbf, #9d4edd);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(157, 78, 221, 0.4);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    background: #5a5a5a;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    color: #b0b0b0;
+  }
+`;
+
+const LoadingSpinner = styled.div`
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #9d4edd;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 10px;
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
 `;
