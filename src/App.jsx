@@ -277,7 +277,19 @@ const RunwareDemo = () => {
           </GeneratorSection>
         </section>
         
-
+        <InfoSection>
+          <InfoTitle>About Runware API</InfoTitle>
+          <InfoText>
+            The Runware JavaScript SDK provides a high-performance WebSocket-based interface for AI-powered media processing.
+            It maintains persistent connections that improve performance for applications requiring multiple operations or real-time feedback.
+          </InfoText>
+          <InfoText>
+            The SDK handles connection management, authentication, and error recovery while exposing Runware's complete feature set through an intuitive Promise-based API.
+          </InfoText>
+          <InfoText>
+            For more information, visit the <a href="https://github.com/Runware/sdk-js" style={{color: '#9d4edd', textDecoration: 'none'}}>Runware SDK GitHub repository</a>.
+          </InfoText>
+        </InfoSection>
 
       </Container>
     </>
@@ -596,4 +608,29 @@ const ResultVideo = styled.video`
   &:hover {
     transform: scale(1.02);
   }
+`;
+
+const InfoSection = styled.section`
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 40px;
+  animation: ${fadeIn} 1s ease-out;
+  backdrop-filter: blur(10px);
+`;
+
+const InfoTitle = styled.h2`
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #ffffff, #cdcdcd);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+
+const InfoText = styled.p`
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: #e0e0e0;
 `;
