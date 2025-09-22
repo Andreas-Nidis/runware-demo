@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
 import { Runware } from '@runware/sdk-js';
 
@@ -25,6 +25,17 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const RunwareDemo = () => {
+  const [isInitialized, setIsInitialized] = useState(false);
+
+
+  useEffect(() => {
+    const initializeRunware = async () => {
+      
+    };
+
+    initializeRunware();
+  }, []);
+
   return (
     <>
       <GlobalStyle />
