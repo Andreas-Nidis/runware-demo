@@ -287,7 +287,7 @@ const RunwareDemo = () => {
             The SDK handles connection management, authentication, and error recovery while exposing Runware's complete feature set through an intuitive Promise-based API.
           </InfoText>
           <InfoText>
-            For more information, visit the <a href="https://runware.ai/docs/en/getting-started/introduction" style={{color: '#9d4edd', textDecoration: 'none'}}>Runware SDK GitHub repository</a>.
+            For more information, visit the <a href="https://runware.ai/docs/en/getting-started/introduction" style={{color: '#9d4edd', textDecoration: 'none'}}>Runware Docs</a>.
           </InfoText>
         </InfoSection>
 
