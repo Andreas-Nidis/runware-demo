@@ -8,12 +8,11 @@ const RunwareDemo = () => {
   const [activeTab, setActiveTab] = useState('image');
   const [isInitialized, setIsInitialized] = useState(false);
   const [isError, setIsError] = useState(false);
-  // const [status, setStatus] = useState('Initializing...');
+  const [status, setStatus] = useState('Initializing...');
   const [isGenerating, setIsGenerating] = useState(false);
   const [prompt, setPrompt] = useState('');
   const [numberOfResults, setNumberOfResults] = useState(1);
   const [results, setResults] = useState([]);
-  const [status, setStatus] = useState(null);
   
   // Initialize Runware SDK
   useEffect(() => {
@@ -49,7 +48,38 @@ const RunwareDemo = () => {
     initializeRunware();
   }, []);
 
-  // getErrorMessage(error) will be a function created to handle different error types
+  // Helper function to extract error messages
+  const getErrorMessage = error => {
+    if (!error) return "Unknown error";
+
+    if (error instanceof Error) {
+      return error.message;
+    }
+
+    if (typeof error === "object") {
+      try {
+        // If it's a Runware error payload
+        if ("error" in error && typeof error.error === "object") {
+          const inner = error.error;
+          if (inner.message) return inner.message;
+        }
+        // Generic object with a message
+        if ("message" in error && typeof error.message === "string") {
+          return error.message;
+        }
+        if (Array.isArray(error)) {
+          return error.map(e => getErrorMessage(e)).join(", ");
+        }
+        return JSON.stringify(error); // Fallback scenario
+      } catch {
+        return String(error);
+      }
+    }
+
+    return String(error);
+  };
+
+  // Handle generation requests
   const handleGenerate = async () => {
     if (!prompt.trim() || !isInitialized) return;
 
@@ -60,7 +90,7 @@ const RunwareDemo = () => {
 
     try {
       if (activeTab === 'image') {
-
+        
         // Generate images using Runware API
         // Faster model is used for demo purposes
         // Smaller size used for faster generation during peak hours
@@ -72,13 +102,13 @@ const RunwareDemo = () => {
           height: 256,
           numberResults: numberOfResults,
           onPartialImages: (partialImages, error) => { 
+
             if (error) {
-              console.log("Images response:", images);
-              console.error('Generation error:', error);
-              // setStatus(`Error: ${getErrorMessage(error)}`); 
+              setStatus(`Error: ${getErrorMessage(error)}`); 
               setIsError(true);
             } else if (partialImages && partialImages.length > 0) {
               setStatus(`Generated ${partialImages.length} of ${numberOfResults} image(s)...`);
+
               // Update results with the new images
               const newResults = partialImages.map(img => img.imageURL);
               setResults(prev => [...prev, ...newResults]);
@@ -107,12 +137,14 @@ const RunwareDemo = () => {
           height: 1080,
           numberResults: numberOfResults,
           onPartialVideos: (partialVideos, error) => {
+
             if (error) {
-              console.error('Partial video error:', error);
-              // setStatus(`Error: ${getErrorMessage(error)}`);
+              setStatus(`Error: ${getErrorMessage(error)}`);
               setIsError(true);
             } else if (partialVideos && partialVideos.length > 0) {
               setStatus(`Received ${partialVideos.length} of ${numberOfResults} partial video(s)...`);
+
+              // Update results with the new videos
               const newResults = partialVideos.map(vid => vid.videoURL);
               setResults(prev => [...prev, ...newResults]);
             }
@@ -127,14 +159,14 @@ const RunwareDemo = () => {
         }
       }
     } catch (error) {
-      console.error('Generation error:', error);
-      // setStatus(`Error: ${getErrorMessage(error)}`);
+      setStatus(`Error: ${getErrorMessage(error)}`);
       setIsError(true);
     } finally {
       setIsGenerating(false);
     }
   };
 
+  // Smooth scroll to generators section
   const scrollToGenerators = () => {
     document.getElementById('generators')?.scrollIntoView({ behavior: 'smooth' });
   };
