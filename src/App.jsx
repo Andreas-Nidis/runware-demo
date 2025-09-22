@@ -94,10 +94,41 @@ const RunwareDemo = () => {
         }
       } else {
         // Generate video using Runware API
+        setStatus(`Video generation started for ${numberOfResults} video(s). This may take several minutes...`);
+
+        const videos = await runware.videoInference({
+          taskType: "videoInference",
+          positivePrompt: prompt,
+          model: "klingai:5@3",
+          deliveryMethod: "async",
+          duration: 5,
+          fps: 24,
+          width: 1080,
+          height: 1080,
+          numberResults: numberOfResults,
+          onPartialVideos: (partialVideos, error) => {
+            if (error) {
+              console.error('Partial video error:', error);
+              // setStatus(`Error: ${getErrorMessage(error)}`);
+              setIsError(true);
+            } else if (partialVideos && partialVideos.length > 0) {
+              setStatus(`Received ${partialVideos.length} of ${numberOfResults} partial video(s)...`);
+              const newResults = partialVideos.map(vid => vid.videoURL);
+              setResults(prev => [...prev, ...newResults]);
+            }
+          }
+        });
+
+        // Final result
+        if (videos && videos.length > 0) {
+          const videoUrls = videos.map(vid => vid.videoURL);
+          setResults(videoUrls);
+          setStatus(`Video generation completed! Created ${videos.length} video(s).`);
+        }
       }
     } catch (error) {
       console.error('Generation error:', error);
-      // setStatus(`Error: ${getErrorMessage(error)}`); --- getErrorMessage will be a function to handle different error types
+      // setStatus(`Error: ${getErrorMessage(error)}`);
       setIsError(true);
     } finally {
       setIsGenerating(false);
