@@ -32,7 +32,7 @@ const RunwareDemo = () => {
           apiKey: apiKey,
           shouldReconnect: true,
           globalMaxRetries: 3,
-          timeoutDuration: 60000, // 5 minutes timeout
+          timeoutDuration: 60000, // 1 minute timeout
         });
         
         setIsInitialized(true);
