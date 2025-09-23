@@ -91,6 +91,9 @@ const RunwareDemo = () => {
     try {
       if (activeTab === 'image') {
         
+
+
+
         // Generate images using Runware API
         // Faster model is used for demo purposes
         // Smaller size used for faster generation during peak hours
@@ -116,6 +119,10 @@ const RunwareDemo = () => {
           },
         });
 
+
+
+        
+
         // Set final results
         if (images && images.length > 0) {
           const imageUrls = images.map((img) => img.imageURL);
@@ -123,9 +130,12 @@ const RunwareDemo = () => {
           setStatus(`Successfully generated ${images.length} image(s)!`);
         }
       } else {
-        // Generate video using Runware API
         setStatus(`Video generation started for ${numberOfResults} video(s). This may take several minutes...`);
 
+
+
+        // Generate video using Runware API
+        // Smaller size used for faster generation during peak hours
         const videos = await runware.videoInference({
           taskType: "videoInference",
           positivePrompt: prompt,
@@ -149,6 +159,11 @@ const RunwareDemo = () => {
               setResults(prev => [...prev, ...newResults]);
             }
           }
+
+
+
+
+
         });
 
         // Final result
