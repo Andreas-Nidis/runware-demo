@@ -4,6 +4,8 @@ A minimal web app that demonstrates how easy it is to build with the Runware API
 
 This project was created for a developer meetup demo scenario — showcasing how developers can integrate Runware into their apps with just a few lines of code.
 
+Try it out with the [GitHub Pages Version](https://andreas-nidis.github.io/runware-demo "GitHub Pages Version")!
+
 ## 🚀 Features
 
 - Generate AI images from custom text prompts
@@ -62,7 +64,7 @@ npm run dev
 - **Environment variables**: keeps API keys secure and out of source code.
 
 ## 📹 Demo Video
-👉 Link to Demo Video (needs to be added)
+👉 Link to [Demo Video](https://youtu.be/FZtN3IizmJo "Demo Video")
 
 This short walkthrough covers:
 - The project UI
